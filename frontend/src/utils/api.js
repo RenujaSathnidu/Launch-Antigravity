@@ -3,7 +3,10 @@ const API_BASE = '/api';
 async function request(path, options = {}) {
   try {
     const res = await fetch(`${API_BASE}${path}`, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-Relic-Api-Key': 'RELIC-RING-SECURE-26'
+      },
       ...options,
     });
     const data = await res.json();

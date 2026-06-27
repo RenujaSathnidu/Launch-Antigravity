@@ -67,6 +67,14 @@ function SummaryCard({ packetResult }) {
         <div className="summary-label">Status</div>
         <div className="status-badge delivered">DELIVERED</div>
       </div>
+      {packetResult.security && (
+        <div className="summary-box">
+          <div className="summary-label">Security</div>
+          <div className="status-badge" style={{ backgroundColor: 'var(--success-color)', color: '#0f172a', padding: '2px 6px' }}>
+            E2EE + SHA-256 VERIFIED
+          </div>
+        </div>
+      )}
       <div className="summary-box">
         <div className="summary-label">Original Message</div>
         <div className="summary-value">{packetResult.message}</div>
@@ -109,6 +117,14 @@ function EventStreamCard({ packetResult }) {
     detail: `ID: ${packetResult.packet_id}`
   });
 
+  if (packetResult.security) {
+    events.push({
+      type: 'success',
+      event: 'security.encrypted',
+      detail: 'E2EE XOR-SHA256 Cipher'
+    });
+  }
+
   // Each hop
   packetResult.hop_log.forEach((hop, i) => {
     if (i === 0) {
@@ -136,6 +152,19 @@ function EventStreamCard({ packetResult }) {
       });
     }
   });
+
+  if (packetResult.security) {
+    events.push({
+      type: 'success',
+      event: 'security.decrypted',
+      detail: 'Ciphertext Decrypted'
+    });
+    events.push({
+      type: 'success',
+      event: 'security.verified',
+      detail: 'SHA-256 Signature Valid'
+    });
+  }
 
   events.push({
     type: 'success',

@@ -106,12 +106,72 @@ export default function HopLog({ packetResult, activeHop }) {
 
               {hop.payload_encoded && (
                 <div className="hop-codex">
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                    Encoded → Base {hop.payload_encoded.base}
-                  </div>
-                  <div className="hop-codex-values">
-                    [{hop.payload_encoded.values?.join(', ')}]
-                  </div>
+                  {hop.hop_index === 0 ? (
+                    <>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        ASCII Plaintext
+                      </div>
+                      <div className="hop-codex-values" style={{ marginBottom: '8px' }}>
+                        [{hop.payload_encoded.ascii_values?.join(', ')}]
+                      </div>
+                      {hop.payload_encoded.ciphertext_values && (
+                        <>
+                          <div style={{ fontSize: '10px', color: '#10b981', marginBottom: '4px' }}>
+                            Encrypted Ciphertext (XOR)
+                          </div>
+                          <div className="hop-codex-values" style={{ marginBottom: '8px' }}>
+                            [{hop.payload_encoded.ciphertext_values?.join(', ')}]
+                          </div>
+                        </>
+                      )}
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        Encoded to Base {hop.payload_encoded.base}
+                      </div>
+                      <div className="hop-codex-values">
+                        [{hop.payload_encoded.values?.join(', ')}]
+                      </div>
+                    </>
+                  ) : hop.payload_encoded.base === 'ASCII' ? (
+                    <>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        Incoming Base {hop.planet_codex}
+                      </div>
+                      <div className="hop-codex-values" style={{ marginBottom: '8px' }}>
+                        [{hop.payload_encoded.incoming_values?.join(', ')}]
+                      </div>
+                      {hop.payload_encoded.ciphertext_values && (
+                        <>
+                          <div style={{ fontSize: '10px', color: '#10b981', marginBottom: '4px' }}>
+                            Encrypted Ciphertext (XOR)
+                          </div>
+                          <div className="hop-codex-values" style={{ marginBottom: '8px' }}>
+                            [{hop.payload_encoded.ciphertext_values?.join(', ')}]
+                          </div>
+                        </>
+                      )}
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        Decrypted to ASCII Plaintext
+                      </div>
+                      <div className="hop-codex-values">
+                        [{hop.payload_encoded.ascii_values?.join(', ')}]
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        Incoming Base {hop.planet_codex}
+                      </div>
+                      <div className="hop-codex-values" style={{ marginBottom: '8px' }}>
+                        [{hop.payload_encoded.incoming_values?.join(', ')}]
+                      </div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                        Encoded to Base {hop.payload_encoded.base}
+                      </div>
+                      <div className="hop-codex-values">
+                        [{hop.payload_encoded.values?.join(', ')}]
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>

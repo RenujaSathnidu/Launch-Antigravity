@@ -47,12 +47,52 @@ export default function HopLogTable({ packetResult }) {
                 <tr className="encoding-row">
                   <td></td>
                   <td colSpan={8}>
-                    <div className="encoding-label">
-                      Payload → Base {hop.payload_encoded.base} Encoding
-                    </div>
-                    <div className="encoding-values">
-                      [{hop.payload_encoded.values.join(', ')}]
-                    </div>
+                    {hop.hop_index === 0 ? (
+                      <>
+                        <div className="encoding-label" style={{ marginBottom: '12px' }}>
+                          <div style={{ marginBottom: '4px' }}>ASCII Plaintext</div>
+                          <div className="encoding-values">[{hop.payload_encoded.ascii_values?.join(', ')}]</div>
+                        </div>
+                        {hop.payload_encoded.ciphertext_values && (
+                          <div className="encoding-label" style={{ marginBottom: '12px', color: '#10b981' }}>
+                            <div style={{ marginBottom: '4px' }}>Encrypted Ciphertext (XOR)</div>
+                            <div className="encoding-values">[{hop.payload_encoded.ciphertext_values?.join(', ')}]</div>
+                          </div>
+                        )}
+                        <div className="encoding-label">
+                          <div style={{ marginBottom: '4px' }}>Encoded to Base {hop.payload_encoded.base}</div>
+                          <div className="encoding-values">[{hop.payload_encoded.values?.join(', ')}]</div>
+                        </div>
+                      </>
+                    ) : hop.payload_encoded.base === 'ASCII' ? (
+                      <>
+                        <div className="encoding-label" style={{ marginBottom: '12px' }}>
+                          <div style={{ marginBottom: '4px' }}>Incoming Base {hop.planet_codex}</div>
+                          <div className="encoding-values">[{hop.payload_encoded.incoming_values?.join(', ')}]</div>
+                        </div>
+                        {hop.payload_encoded.ciphertext_values && (
+                          <div className="encoding-label" style={{ marginBottom: '12px', color: '#10b981' }}>
+                            <div style={{ marginBottom: '4px' }}>Encrypted Ciphertext (XOR)</div>
+                            <div className="encoding-values">[{hop.payload_encoded.ciphertext_values?.join(', ')}]</div>
+                          </div>
+                        )}
+                        <div className="encoding-label">
+                          <div style={{ marginBottom: '4px' }}>Decrypted to ASCII Plaintext</div>
+                          <div className="encoding-values">[{hop.payload_encoded.ascii_values?.join(', ')}]</div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="encoding-label" style={{ marginBottom: '12px' }}>
+                          <div style={{ marginBottom: '4px' }}>Incoming Base {hop.planet_codex}</div>
+                          <div className="encoding-values">[{hop.payload_encoded.incoming_values?.join(', ')}]</div>
+                        </div>
+                        <div className="encoding-label">
+                          <div style={{ marginBottom: '4px' }}>Encoded to Base {hop.payload_encoded.base}</div>
+                          <div className="encoding-values">[{hop.payload_encoded.values?.join(', ')}]</div>
+                        </div>
+                      </>
+                    )}
                   </td>
                 </tr>
               </React.Fragment>
