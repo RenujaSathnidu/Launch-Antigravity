@@ -3,6 +3,8 @@
    Premium dark space theme with glassmorphism
    ══════════════════════════════════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 :root {
   --void-black: #06060e;
   --void-deep: #0a0a1a;
@@ -28,10 +30,9 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body, #root {
+html {
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 body {
@@ -39,25 +40,35 @@ body {
   background: var(--void-black);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  min-height: 100%;
+}
+
+#root {
+  min-height: 100%;
 }
 
 /* ── Layout ─────────────────────────────────────────────────────────────── */
 
 .app-layout {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 30% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
+              var(--void-black);
+}
+
+.top-section {
   display: flex;
   height: 100vh;
   width: 100vw;
   position: relative;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 30% 20%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
-              var(--void-black);
 }
 
 .canvas-section {
   flex: 1 1 65%;
   position: relative;
   min-width: 0;
+  height: 100vh;
 }
 
 .panels-section {
@@ -70,6 +81,40 @@ body {
   flex-direction: column;
   gap: 14px;
   z-index: 10;
+}
+
+/* ── Loading Screen ────────────────────────────────────────────────────── */
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--void-black);
+  gap: 16px;
+}
+
+.loading-screen h2 {
+  background: linear-gradient(135deg, var(--nebula-light), var(--plasma-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 20px;
+}
+
+.loading-screen p {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(124, 58, 237, 0.2);
+  border-top-color: var(--nebula-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────── */
@@ -448,6 +493,7 @@ body {
 .latency-bar-fill.fiber { background: linear-gradient(90deg, var(--plasma-cyan), #22d3ee); }
 .latency-bar-fill.tower { background: linear-gradient(90deg, var(--warning), #fbbf24); }
 .latency-bar-fill.void { background: linear-gradient(90deg, var(--nebula-purple), #8b5cf6); }
+.latency-bar-fill.atmosphere { background: linear-gradient(90deg, var(--success), #34d399); }
 
 .latency-bar-value {
   font-family: var(--font-mono);
@@ -469,7 +515,7 @@ body {
   margin-top: 10px;
 }
 
-/* ── Loading Spinner ────────────────────────────────────────────────────── */
+/* ── Spinner ────────────────────────────────────────────────────────────── */
 
 .spinner {
   display: inline-block;
@@ -503,7 +549,7 @@ body {
 /* ── App Title Bar ──────────────────────────────────────────────────────── */
 
 .app-title-bar {
-  position: absolute;
+  position: fixed;
   top: 16px;
   left: 20px;
   z-index: 20;
@@ -676,4 +722,347 @@ body {
 
 .chaos-node-btn.killed {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Summary Report Section (below the fold)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.summary-report-section {
+  position: relative;
+  padding: 60px 40px 80px 40px;
+  background: linear-gradient(180deg, var(--void-black) 0%, rgba(10, 10, 26, 1) 100%);
+  border-top: 1px solid rgba(124, 58, 237, 0.15);
+  min-height: 60vh;
+}
+
+.summary-report-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--nebula-purple), transparent);
+}
+
+.report-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.report-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.report-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--nebula-light), var(--plasma-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.report-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.scroll-hint {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Hop Log Table ──────────────────────────────────────────────────────── */
+
+.hop-table-container {
+  margin-bottom: 40px;
+  overflow-x: auto;
+}
+
+.hop-table-container::-webkit-scrollbar { height: 6px; }
+.hop-table-container::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 3px; }
+
+.report-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(20px);
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.report-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nebula-light);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hop-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.hop-table th {
+  padding: 10px 14px;
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--panel-border);
+  white-space: nowrap;
+}
+
+.hop-table td {
+  padding: 12px 14px;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.hop-table tbody tr {
+  transition: background var(--transition);
+}
+
+.hop-table tbody tr:hover {
+  background: rgba(124, 58, 237, 0.06);
+}
+
+.hop-table .planet-cell {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.hop-table .codex-cell {
+  color: var(--nebula-light);
+}
+
+.hop-table .time-cell {
+  color: var(--plasma-light);
+}
+
+.hop-table .encoding-row {
+  background: rgba(6, 6, 14, 0.4);
+}
+
+.hop-table .encoding-row td {
+  border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+  padding: 8px 14px;
+}
+
+.encoding-label {
+  color: var(--text-muted);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+}
+
+.encoding-values {
+  color: var(--nebula-light);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+/* ── Dashboard Cards Grid ───────────────────────────────────────────────── */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Latency Breakdown Card ─────────────────────────────────────────────── */
+
+.latency-card .latency-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+  font-size: 13px;
+}
+
+.latency-card .latency-row:last-child {
+  border-bottom: none;
+}
+
+.latency-card .latency-row .label {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.latency-card .latency-row .label .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.latency-card .latency-row .val {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.latency-card .latency-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--panel-border), transparent);
+  margin: 6px 0;
+}
+
+.latency-card .latency-row.total .label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.latency-card .latency-row.total .val {
+  font-size: 15px;
+  background: linear-gradient(135deg, var(--nebula-light), var(--plasma-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* ── Delivery Summary Card ──────────────────────────────────────────────── */
+
+.summary-card .summary-box {
+  padding: 12px;
+  background: rgba(6, 6, 14, 0.5);
+  border: 1px solid rgba(124, 58, 237, 0.1);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+}
+
+.summary-card .summary-box:last-child {
+  margin-bottom: 0;
+}
+
+.summary-card .summary-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.summary-card .summary-value {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.summary-card .summary-value.route {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--plasma-light);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.status-badge.delivered {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.summary-footer {
+  margin-top: 14px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Event Stream Card ──────────────────────────────────────────────────── */
+
+.stream-card .stream-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.stream-card .stream-list::-webkit-scrollbar { width: 4px; }
+.stream-card .stream-list::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 2px; }
+
+.stream-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+  font-size: 12px;
+}
+
+.stream-row:last-child {
+  border-bottom: none;
+}
+
+.stream-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stream-dot.info { background: var(--plasma-cyan); }
+.stream-dot.success { background: var(--success); }
+.stream-dot.hop { background: var(--nebula-light); }
+
+.stream-event {
+  flex: 1;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.stream-detail {
+  color: var(--text-muted);
+  font-size: 11px;
 }
